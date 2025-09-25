@@ -23,17 +23,29 @@ class SwedishCityQuiz {
         // Initialize the map centered on Sweden
         this.map = L.map('map').setView([62.0, 15.0], 5);
 
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
+        // Use CartoDB Positron tiles which have minimal labels, or try to use a label-free version
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap contributors, © CARTO',
+            subdomains: 'abcd',
             maxZoom: 18,
         }).addTo(this.map);
 
-        // Add click event listener to the map
-        this.map.on('click', (e) => this.onMapClick(e));
-    }
+        // Fallback: Add CSS to hide any remaining labels
+        const style = document.createElement('style');
+        style.textContent = `
+            .leaflet-container text,
+            .leaflet-tile-pane .leaflet-layer text,
+            .leaflet-control-attribution {
+                font-size: 0 !important;
+                opacity: 0 !important;
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
 
-    selectRandomCities() {
+        // Add click event listener to place the initial pin
+        this.map.on('click', (e) => this.onMapClick(e));
+    } selectRandomCities() {
         // Shuffle and select random cities
         const shuffled = [...swedishCities].sort(() => 0.5 - Math.random());
         this.questionCities = shuffled.slice(0, this.totalQuestions);
@@ -43,6 +55,7 @@ class SwedishCityQuiz {
     }
 
     setupEventListeners() {
+        document.getElementById('submit-btn').addEventListener('click', () => this.submitAnswer());
         document.getElementById('next-btn').addEventListener('click', () => this.nextQuestion());
         document.getElementById('restart-btn').addEventListener('click', () => this.restartGame());
     }
@@ -65,25 +78,30 @@ class SwedishCityQuiz {
         document.getElementById('city-name').textContent = city.name;
         document.getElementById('current-question').textContent = this.currentCityIndex + 1;
 
-        // Hide previous results
+        // Show pin instructions and hide previous results
+        document.getElementById('pin-instruction').style.display = 'block';
         document.getElementById('distance-info').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
 
         // Clear previous markers
         this.clearMarkers();
 
         this.gameActive = true;
-    }
-
-    onMapClick(e) {
+    } onMapClick(e) {
         if (!this.gameActive) return;
 
         const userLat = e.latlng.lat;
         const userLng = e.latlng.lng;
-        const currentCity = this.questionCities[this.currentCityIndex];
 
-        // Place user marker
+        // Remove existing user marker if any
+        if (this.userMarker) {
+            this.map.removeLayer(this.userMarker);
+        }
+
+        // Place draggable user marker
         this.userMarker = L.marker([userLat, userLng], {
+            draggable: true,
             icon: L.divIcon({
                 className: 'custom-pin user-pin',
                 html: '📍',
@@ -92,7 +110,32 @@ class SwedishCityQuiz {
             })
         }).addTo(this.map);
 
-        this.userMarker.bindPopup('<div class="pin-popup user-pin">Your guess</div>');
+        this.userMarker.bindPopup('<div class="pin-popup user-pin">Your guess - drag to move!</div>');
+
+        // Show submit button
+        document.getElementById('submit-btn').style.display = 'inline-block';
+        document.getElementById('pin-instruction').style.display = 'none';
+
+        // Add drag event listeners
+        this.userMarker.on('dragstart', () => {
+            this.userMarker.closePopup();
+        });
+
+        this.userMarker.on('dragend', () => {
+            this.userMarker.openPopup();
+        });
+    }
+
+    submitAnswer() {
+        if (!this.userMarker || !this.gameActive) return;
+
+        const userLat = this.userMarker.getLatLng().lat;
+        const userLng = this.userMarker.getLatLng().lng;
+        const currentCity = this.questionCities[this.currentCityIndex];
+
+        // Update user marker to non-draggable and change popup
+        this.userMarker.dragging.disable();
+        this.userMarker.bindPopup('<div class="pin-popup user-pin">Your final answer</div>');
 
         // Place correct marker
         this.correctMarker = L.marker([currentCity.lat, currentCity.lng], {
@@ -119,6 +162,9 @@ class SwedishCityQuiz {
         // Fit map to show both markers
         const group = new L.featureGroup([this.userMarker, this.correctMarker]);
         this.map.fitBounds(group.getBounds().pad(0.1));
+
+        // Hide submit button and show next button
+        document.getElementById('submit-btn').style.display = 'none';
 
         this.gameActive = false;
     }

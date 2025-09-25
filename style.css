@@ -5,10 +5,56 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Se.controls {
+ text-align: center;
+}
+
+button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #333;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin: 5px;
+}
+
+#submit-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#submit-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    animation: none;
+    opacity: 0.6;
+}
+
+,
+Geneva,
+Verdana,
+sans-serif;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+min-height: 100vh;
+color: #333;
 }
 
 .container {
@@ -114,6 +160,44 @@ button:hover {
 
 button:active {
     transform: translateY(0);
+}
+
+#submit-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#submit-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    animation: none;
+    opacity: 0.6;
+}
+
+.pin-instruction {
+    background: #e7f3ff;
+    border: 2px solid #0066cc;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 1rem;
+    color: #0066cc;
+    text-align: center;
+    font-weight: bold;
 }
 
 .map-container {

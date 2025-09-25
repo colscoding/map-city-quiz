@@ -4,12 +4,13 @@ A fun web-based quiz game where you test your knowledge of Swedish geography by 
 
 ## How to Play
 
-1. You'll see a map of Sweden without any cities marked
-2. A Swedish city name will be displayed
-3. Click on the map where you think the city is located
-4. Your pin and the correct location will be shown
-5. You'll get points based on how close you were (closer = more points)
-6. Complete 10 cities to see your final score!
+1. You'll see a clean map of Sweden without any city names or labels
+2. A Swedish city name will be displayed at the top
+3. Click anywhere on the map to place your guess pin 📍
+4. Drag the pin around to adjust your position as needed
+5. Click "Submit Answer" when you're confident in your placement
+6. See both your guess and the correct location, plus your score
+7. Complete 10 cities to see your final score!
 
 ## Scoring System
 
@@ -51,12 +52,14 @@ You can also try opening `index.html` directly in your browser, but some browser
 
 ## Features
 
-- 🗺️ Interactive map of Sweden using OpenStreetMap
+- 🗺️ Clean, label-free map of Sweden using CARTO tiles
+- 📍 Draggable pin system - place and adjust your guess before submitting
 - 🎯 50+ Swedish cities including major cities and smaller towns
 - 📊 Real-time scoring based on distance accuracy
 - 📱 Responsive design that works on mobile devices
 - 🔄 Randomized questions for replay value
 - 🏆 Performance ratings and final score
+- ✨ Smooth animations and user-friendly interface
 
 ## Technologies Used
 
