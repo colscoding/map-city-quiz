@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swedish City Quiz</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🇸🇪 Swedish City Quiz</h1>
+            <p>Click on the map where you think the city is located!</p>
+        </header>
+
+        <div class="game-info">
+            <div class="score-panel">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="question-counter">Question: <span id="current-question">1</span>/<span
+                        id="total-questions">10</span></div>
+            </div>
+
+            <div class="question-panel">
+                <h2 id="city-name">Loading...</h2>
+                <div class="distance-info" id="distance-info" style="display: none;">
+                    <span id="distance-text"></span>
+                    <span id="points-earned"></span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="next-btn" style="display: none;">Next City</button>
+                <button id="restart-btn" style="display: none;">Play Again</button>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+
+        <div class="final-score" id="final-score" style="display: none;">
+            <h2>Quiz Complete!</h2>
+            <p>Your final score: <span id="final-score-value"></span>/1000</p>
+            <p id="score-rating"></p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="cities.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
